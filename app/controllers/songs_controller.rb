@@ -1,18 +1,36 @@
 class SongsController < ApplicationController
-  before_action :find_artist, only: [:new, :create]
+  before_action :find_artist, only: [:new, :create, :index]
+  before_action :find_song, only: [:show, :edit, :update]
+
+  def index
+    @songs = Song.all
+  end
 
   def new
     @song = @artist.songs.new
   end
 
   def create
-    @song = @artist.songs.create(song_params)
-
-    redirect_to song_path(@song)
+    @song = @artist.songs.new(song_params)
+      if @song.save
+        redirect_to song_path(@song)
+      else
+        render :new
+      end
   end
 
   def show
-    @song = Song.find(params[:id])
+  end
+
+  def edit
+  end
+
+  def update
+    if @song.update(song_params)
+      redirect_to @song
+    else
+      render :edit
+    end
   end
 
   private
@@ -24,4 +42,9 @@ class SongsController < ApplicationController
   def find_artist
     @artist = Artist.find(params[:artist_id])
   end
+
+  def find_song
+    @song = Song.find(params[:id])
+  end
+
 end
