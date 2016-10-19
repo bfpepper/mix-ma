@@ -3,4 +3,8 @@ class Artist < ApplicationRecord
   validates :image_path, presence: true
 
   has_many :songs
+
+  def sorted_songs
+    songs.order('title ASC')
+  end
 end

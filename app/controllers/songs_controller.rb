@@ -1,6 +1,10 @@
 class SongsController < ApplicationController
-  before_action :find_artist, only: [:new, :create]
+  before_action :find_artist, only: [:new, :create, :index]
   before_action :find_song, only: [:show, :edit, :update]
+
+  def index
+    @songs = Song.all
+  end
 
   def new
     @song = @artist.songs.new
