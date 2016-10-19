@@ -1,4 +1,6 @@
 class PlaylistsController < ApplicationController
+  before_action :find_playlist, only: [:show, :edit]
+  before_action :get_all_songs, only: [:new, :edit]
 
   def index
     @playlists = Playlist.all
@@ -6,7 +8,6 @@ class PlaylistsController < ApplicationController
 
   def new
     @playlist = Playlist.new
-    @songs    = Song.all
   end
 
   def create
@@ -15,13 +16,9 @@ class PlaylistsController < ApplicationController
   end
 
   def show
-    @playlist = Playlist.find(params[:id])
   end
 
   def edit
-    @playlist = Playlist.find(params[:id])
-    @songs = Song.all
-    # byebug
   end
 
   def update
@@ -33,6 +30,14 @@ private
 
   def playlist_params
     params.require(:playlist).permit(:name, song_ids: [])
+  end
+
+  def find_playlist
+    @playlist = Playlist.find(params[:id])
+  end
+
+  def get_all_songs
+    @songs = Song.all
   end
 
 end
